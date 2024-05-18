@@ -1,6 +1,6 @@
 # Kashyap_NASSCOM_VSD_SOC_Design_PD
 
-**Introduction**
+# **Introduction**
 
 This workshop offers hands-on experience designing an Application Specific Integrated Circuit (ASIC) using open-source processes. I will learn about physical design and how to create a chip layout, going from a high-level description (RTL) to a final design file (GDSII) suitable for fabrication. The workshop leverages Google's open-source resources for the design process.
 This workshop will use OpenLANE and Sky130 nm PDK to generate standard cells.
@@ -11,9 +11,9 @@ Below, I will upload the lab contents of what I have learned in this workshop.
 
 *****************************************************************************************************************************************************************************************************************************************
 
-**Day 1**
+# **Day 1**
 
-1.Locating Openlane work Directory and exploring files.
+### 1.Locating Openlane work Directory and exploring files.
 
   OpenLANE operates in a Linux-based OS environment, so we access it through a virtual environment using VirtualBox, with Ubuntu as the installed OS.
 
@@ -54,7 +54,7 @@ Below, I will upload the lab contents of what I have learned in this workshop.
 
   Therefore, Sky130_fd_sc_hd describes a collection of high-density, pre-designed digital circuit elements built by SkyWater Foundry using their 130nm process. This library allows designers to quickly and efficiently create complex  digital circuits.
 
-2. Invoking OpenLANE 
+### 2. Invoking OpenLANE 
 
   First, navigate to the directory where OpenLANE is located:
 
@@ -70,7 +70,7 @@ Below, I will upload the lab contents of what I have learned in this workshop.
 
   ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/c5ab3bd8-baed-49a3-8c3a-6ab6ea260ec8)
 
-3. Now we will run simulations on synthesis of picorv32a.
+### 3. Now we will run simulations on synthesis of picorv32a.
 
   It consist multiple stages:
   a. Design Preparation stage
@@ -98,7 +98,7 @@ After running this command, the synthesis will take a few minutes. After complet
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/5cf0937b-876a-4cfa-b161-b87d22a500c6)
 
 
-**Workshop Objective 1**
+## **Workshop Objective 1**
 Calculate the flop ration i.e. number of D Flipflops in the generated netlist.
 
 We will use the "Number of cells: " and "sky130_fd_sc_hd__dfxtp_2" generated in the synthesis report.
@@ -113,7 +113,7 @@ Therefore the Flop ratio is 10.84%.
 
 *****************************************************************************************************************************************************************************************************************************************
 
-**Day 2**
+## **Day 2**
 
 
   
