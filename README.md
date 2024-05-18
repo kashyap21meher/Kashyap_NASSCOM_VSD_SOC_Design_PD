@@ -9,6 +9,8 @@ This workshop will use OpenLANE and Sky130 nm PDK to generate standard cells.
 
 Below, I will upload the lab contents of what I have learned in this workshop.
 
+*****************************************************************************************************************************************************************************************************************************************
+
 **Day 1**
 
 1.Locating Openlane work Directory and exploring files.
@@ -108,6 +110,8 @@ Flop Ratio = (Total No. of D Flipflops)/(Total No. Cells) = 1613/14876 = 0.1084
 %Flop Ratio = 0.1084 * 100 = 10.84
 
 Therefore the Flop ratio is 10.84%.
+
+*****************************************************************************************************************************************************************************************************************************************
 
 **Day 2**
 
