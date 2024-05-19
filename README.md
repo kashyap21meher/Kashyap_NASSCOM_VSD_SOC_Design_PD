@@ -115,6 +115,76 @@ Therefore the Flop ratio is 10.84%.
 
 ## **Day 2**
 
+### 1. Running Floorplan in OpenLane
+
+Before running the floor plan, we must check all the configuration files; the data in this file is used to set important parameters like die size, aspect ratio, utilization factor, etc.
+We can find these configuration files at the location below.
+
+```./openlane/configurations ```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/5c8950c3-aad3-439c-82ab-9a8ebd18698c)
+
+The "README.md" files contain the information of a set of switches that are required to be set in the configuration files (*.tcl)
+The configuration file for the floorplan is named "floorplan. tcl," and its contents are shown in the below image.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/ee6cc837-b7aa-44dd-8109-52aec03ebc09)
+
+After all the required Changes, we can run the Floorplan step with the below command:
+
+```run_floorplan```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/f09dbb25-cd46-4632-8bda-64440fbc7713)
+
+The image below shows that this step is completed without any errors.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1d8f1bca-d795-4b9a-90bd-06cd607a858d)
+
+We can view the generated floorplan data on the path given below :
+
+```./openlane/designs/picorv32a/runs/<date-on-which-simulaion-executed>/results/floorplan``` 
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/db7e878d-f6e8-475c-8424-9ee16cd63aab)
+
+we can check the data in "picorv32a.floorplan.def"
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/31da20f0-17e4-4a31-ac8a-a0fa024d3f50)
+
+## **Workshop Objective 2**
+Calculate the Area of the Die
+
+From the above output data we get ,
+
+Unit Distance Microns 1000
+
+Die Width = 660685/1000 = 660.685 Microns
+
+Die Height = 671405/1000 = 671.405 Microns
+
+Therefore, Area of the Die = Width * Hieight = 660.685 * 671.405
+
+**Area of the Die = 443,587.212425 Sq. Microns**
+
+### 2. Review floorplan layout in Magic
+
+The command used to invoke maic is given below
+
+```magic -T <technology_file_path> lef read <path_for_meged.lef_file> def read <path_for_*.def_file> & ```
+
+Therefore the customized command which I used was:
+
+```magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &```
+
+After executing this command, Magic is invoked, and we can see the floorplan of your design.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/05674c69-9d84-4e94-9f72-a7914cebb930)
+
+By using Tkcon window, we can check what cell it is
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/140166b8-7371-4c86-a8df-8f1a4f2cdddb)
+
+
+
+
 
   
   
