@@ -182,6 +182,35 @@ By using Tkcon window, we can check what cell it is
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/140166b8-7371-4c86-a8df-8f1a4f2cdddb)
 
+### 3. Running Placement in OpenLANE
+
+We use the below command to run placement.
+
+```run_placement```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1c30319b-7a9b-46bc-8530-3cfc9f604a95)
+
+Once Placement is done, we can view our schematic in Magic. We will use the same command format used earlier to invoke Magic and make the required changes and execute on the correct file path.
+
+```magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/16315a5c-e826-4c50-b0e0-75e7b5f56ddc)
+
+Maic Window
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/f665f5a5-033f-408f-a23f-d3dbb930c065)
+
+We can see placement of Blocks in Row Format
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/17cd9a85-bf59-4018-85e8-f56da096c7b5)
+
+*****************************************************************************************************************************************************************************************************************************************
+
+## **Day 3**
+
+### 1.
+
+
 
 
 
