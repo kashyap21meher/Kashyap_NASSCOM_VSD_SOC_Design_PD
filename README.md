@@ -250,6 +250,66 @@ After this step, go on your virtual machine, and in the openLANE Directory type 
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/652d71f0-c7ae-473c-8f5d-3647eefa524f)
 
+To view the copied inverter file, we will use magic. We have copied the tech file to current directory. 
+The command for magic:
+
+```magic -T sky130A.tech sky130_inv.mag &```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/81fde5f2-b15b-41e5-a131-316ef40a4d10)
+
+Once the layout is opened, we can use Magic GUI to learn about layers in the mask layout. We can select/deselect layers by clicking icons on the right-hand side
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/0a0bbe65-662d-45be-9852-d85c1c6b7b72)
+
+We can get to know about the device type just by dragging the cursor over the required region, pressing s (which selects the area), and then typing the prompt “what” in the tkon window.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/8670622d-39f9-470c-998d-720b50f6748d) ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/708211b9-efd7-4b20-97b5-9e26e6cb45fc)
+
+
+We can also check the connectivity of the pins by dragging the cursor over the required region, pressing "sss" ( three times s) .
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/c3ae0275-9b25-43c3-b9ac-67dcf738ee0d)
+
+### 3. Extracting Netlist from Layout File
+
+For extracting Netlist we will use the below commands in the tkon window:
+
+```
+extract all
+ext2spice cthresh0 rthresh0
+ext2spice
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/337ddfaa-301a-4f32-bce3-7ebb15868984)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/c8f6e1cc-49d0-46ca-ac62-793781eb132f)
+
+The generated netlist is shown below:
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/32f6a1df-8c8d-46b9-ab7c-89801cf669fa)
+
+The Extracted Parastics are shown below:
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/5074641f-6188-47a4-97c6-c458729a85cc)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
