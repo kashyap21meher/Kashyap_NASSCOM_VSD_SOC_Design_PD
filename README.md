@@ -208,7 +208,65 @@ We can see placement of Blocks in Row Format
 
 ## **Day 3**
 
-### 1.
+### 1. IO Placer Revision
+
+One of the features of OpenLANE is that we can make changes on the fly.
+
+To see this, we are going to change the placement of Input-Output pins (IO placer).
+
+First, we will figure out what key value needs to be updated; we can get this information in the "README.md" file in the configuration folder.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/ad150f8f-bfda-460d-9ebc-8db598de9632)
+
+Now, we will set the key with a different value in the openlaneFlow window and execute the floorplan command again.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/770619bf-7333-40a8-ae3e-8c8856a79880)
+
+Once this is complete, we can verify changes in the new floor plan using Magic.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/42b77bdd-65de-4be8-9062-5f4930b5c0f6)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/8e487766-c1ec-43b1-9b81-f70771335a9b)
+
+The above image shows that the IO pins have changed their position compared to the first floorplan.
+
+### 2. Cloning a Git File.
+
+For this lab, we have to clone a git file that contains the required information and files for standard cell designs.
+
+To get this data, we will go to a Git hub repository whose address is mentioned below.
+
+```https://github.com/nickson-jose/vsdstdcelldesign```
+
+To copy the git link, press on Code. After that, a dropdown tab will appear; click the copy option to copy the URL.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/f2f97c76-ca7e-4d8c-8587-eb40809e9542)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/8380c73d-269e-4625-88b6-b0d91ee24804)
+
+After this step, go on your virtual machine, and in the openLANE Directory type the below command :
+
+```git clone https://github.com/nickson-jose/vsdstdcelldesign.git```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/652d71f0-c7ae-473c-8f5d-3647eefa524f)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
