@@ -327,13 +327,13 @@ Now Right click to zoom
 
    Fall Time = 0.02ns
 
-3.Cell rise delay 50%-1.65
+3. Cell rise delay 50%-1.65
 
   ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/332bac11-4d78-400a-b10c-8154259cbf71)
 
   Cell rise delay = 0.05ns
 
-4.Cell fall delay 50%-1.65
+4. Cell fall delay 50%-1.65
 
   ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/200ceca5-d300-4ec2-9eaf-35d2f2a953a0)
 
