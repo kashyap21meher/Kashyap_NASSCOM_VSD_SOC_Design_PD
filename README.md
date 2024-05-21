@@ -790,11 +790,59 @@ set_propagated_clock [all_clocks]
 help report_checks
 report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
 ```
-![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7be77789-23d0-43c6-b1f5-a5b103db997b)
+
 
 Steps to execute OpenSTA with right timing libraries and CTS assignment.
 
+
+
 Steps to observe impact of bigger CTS buffers on setup and hold timing
+
+```
+openroad
+
+read_lef /openLANE_flow/designs/picorv32a/runs/21-05_14-41/tmp/merged.lef
+
+read_def /openLANE_flow/designs/picorv32a/runs/21-05_14-41/results/cts/picorv32a.cts.def
+
+write_db pico_cts1.db
+
+read_db pico_cts.db
+
+read_verilog /openLANE_flow/designs/picorv32a/runs/21-05_14-41/results/synthesis/picorv32a.synthesis_cts.v
+
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+link_design picorv32a
+
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+set_propagated_clock [all_clocks]
+
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+
+report_clock_skew -hold
+
+report_clock_skew -setup
+
+exit
+
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+set ::env(CTS_CLK_BUFFER_LIST) [linsert $::env(CTS_CLK_BUFFER_LIST) 0 sky130_fd_sc_hd__clkbuf_1]
+
+echo $::env(CTS_CLK_BUFFER_LIST)
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/5ee0f542-bc7c-4b32-9b4c-a82c69054127)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/db2abcce-84e0-4bc6-8978-9c7db844edde)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/aa5b6699-a9cf-4ea8-9d41-92624a0e01c0)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/26c3ddf9-3840-42f5-96e9-4d2cb38bd625)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/d1b3b77e-d8e9-4531-863a-1aa53cdb0344)
 
 *****************************************************************************************************************************************************************************************************************************************
 
