@@ -847,9 +847,14 @@ gvim 20-fastroute.guide
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1b9a2527-b2ea-487e-a85c-4b296ea29900)
 
-Final Layout - A beauty ,A Art work
+### Final Layout - A Beauty ,A Art work
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/40c62d35-8470-4eab-9ed1-e630837da38e)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7a082cc4-f584-4501-8ab2-3310a81c43e8)
+
+
+
 
 
 
