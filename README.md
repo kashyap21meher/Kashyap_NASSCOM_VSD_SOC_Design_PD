@@ -499,6 +499,68 @@ run_synthesis
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/41406001-dc2b-4c24-8a8b-2e85d537ea26)
 
+Now we have to take care of slew , we will set some reqired keys to improve overall specs.
+We will execute commands in the following order
+
+```
+prep -design picorv32a -tag 21-05_08-49 -overwrite
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+echo $::env(SYNTH_STRATEGY) # Command to display current value of variable SYNTH_STRATEGY
+set ::env(SYNTH_STRATEGY) "DELAY 3" # Command to set new value for SYNTH_STRATEGY
+echo $::env(SYNTH_BUFFERING)# Command to display current value of variable SYNTH_BUFFERING to check whether it's enabled
+echo $::env(SYNTH_SIZING) # Command to display current value of variable SYNTH_SIZING
+set ::env(SYNTH_SIZING) 1 # Command to set new value for SYNTH_SIZING
+echo $::env(SYNTH_DRIVING_CELL) # Command to display current value of variable SYNTH_DRIVING_CELL to check whether it's the proper cell or not
+run_synthesis
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/a8890c03-20e7-4b9c-b5fb-2f9614832039)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/61fd81b5-10f1-4ab2-aaf2-eb4b4540476f)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/0ba7efe7-d872-463c-8a9a-4bc72c3c2461)
+
+The area has increased, and the worst negative slack has improved to 0.
+
+Now ,we will run floorplan 
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/356bdeb5-c90a-48bb-bca1-37017f67f967)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/e93e288a-f383-44a0-8500-3e536891cfe1)
+
+There is a error for running floorplan , therefore we are excuting the below command.
+
+```
+init_floorplan
+place_io
+tap_decap_or
+run_placement
+```
+Now Placement step is completed.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/fa228545-53ff-47a0-bc2b-1ff4eeb56aa0)
+
+We will now invoke Magic to view the Placement of our cell in the design.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/3cf4488e-f224-4752-9094-b40800bf56a6)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/b6390f70-15e7-4885-839b-589c552f7ce3)
+
+We can see our custom inverter been placed in the design
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/4faff06b-8629-4784-bfbb-67444ce84137)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/90679565-742c-4fec-b46a-839d277918d6)
+
+
+
+
+
+
+
+
+
+
 
 
 
