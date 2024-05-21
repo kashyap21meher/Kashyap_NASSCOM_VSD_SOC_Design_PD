@@ -394,7 +394,29 @@ drc why
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/168d2f05-9d32-49b3-8c4c-a9801e302e44)
 
-### DRC EXCERSISE 2
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/ff334310-1013-4c8c-8bd7-bd3402d3c64c)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/a0fe5fa4-8129-478f-9866-1e2042eaec13)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/b2925474-2ab5-4249-805f-4183490fe267)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/0b89c627-4c2e-4e94-ba8b-16c650a1d0c6)
+
+### DRC EXCERSISE 2 - Fix Missing Rules
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/f0a6f51e-ffd0-478e-9208-2169afe32672)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1915b34b-ba10-404a-84f7-6bb98e760c10)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/c3b3ea2f-c948-4efe-a7ba-090c250e08a5)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/af866d20-dd6e-4180-b8d0-ba7d91c80447)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/8ac1eb22-0a0f-452f-be76-9496a0be4bce)
+
+
+
+
 
 
 
