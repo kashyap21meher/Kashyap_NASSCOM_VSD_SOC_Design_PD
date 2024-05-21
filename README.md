@@ -328,16 +328,96 @@ Now Right click to zoom
    Fall Time = 0.02ns
 
 3. Cell rise delay 50%-1.65
-
-  ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/332bac11-4d78-400a-b10c-8154259cbf71)
-
-  Cell rise delay = 0.05ns
+   
+   ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/332bac11-4d78-400a-b10c-8154259cbf71)
+   
+   Cell rise delay = 0.05ns
 
 4. Cell fall delay 50%-1.65
+   
+   ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/200ceca5-d300-4ec2-9eaf-35d2f2a953a0)
+   
+   Cell fall delay = 0.02ns
 
-  ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/200ceca5-d300-4ec2-9eaf-35d2f2a953a0)
+### 5. Magic DRC
 
-  Cell fall delay = 0.02ns
+We will download the setup for the GitHub repository for this lab and unzip it.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1edcbc90-b35e-419a-8f2a-a3bba15a1f0a)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/07ff60bd-e8e8-4478-bc31-1533c5135275)
+
+Command for invoking Maic is :
+
+```magic -d XR &```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6c425237-e458-4234-9480-f29859a6d83d)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/588482a9-2b50-445c-b220-fda9629c1438)
+
+We can use the File > Open ,option to open any layout file
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/380a092f-8347-4a58-84e0-f399445e4dba)
+
+DRC errors are highlighted in white shade on layout , we can see the excat error in tkon window by selecting the cell and excuting command "drc why ".
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1f6cb142-b485-482e-88a8-b373e2547427)
+
+### DRC EXCERSISE 1
+
+Open layout file "poly.mag"
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/8a7b4730-aac4-4c87-95b2-bdc5101b9fac)
+
+In this file we will be working on "poly.9" layout
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6d43eccb-e1cb-4345-9ddd-5824b2dcfca6)
+
+As we can see, no DRC errors are visible in the above layout, but there are some DRC errors. We must make changes to the "sky130A.tech" file to fix this.
+
+```gedit sky130A.tech```
+
+Changes done are highlighted in the below image.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/c60add31-bc14-484c-9270-20571b8f5483)
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/908b1d29-a103-4d89-80c8-a9aee63ecc38)
+
+After changes are made, Magic will not need to restart. We can just run the below command in the tkcon window to refer to the rules, and DRC checks are reflected in the layout view.
+
+```
+tech load sky130A.tech
+drc check
+drc why
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6a914963-48b0-49a1-a9be-663b5a6635a9)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/168d2f05-9d32-49b3-8c4c-a9801e302e44)
+
+### DRC EXCERSISE 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
