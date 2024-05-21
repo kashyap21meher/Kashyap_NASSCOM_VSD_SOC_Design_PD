@@ -552,6 +552,330 @@ We can see our custom inverter been placed in the design
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/90679565-742c-4fec-b46a-839d277918d6)
 
+### 3. Steps to configure OpenSTA for post-synth timing analysis
+
+Since we have achieved a worst negative slack (WNS) of 0 after the improved timing run, we will now perform timing analysis on the initial synthesis run. This initial run had many violations and no parameters were added to improve timing.
+
+First we will creat pre_sta. conf file in the openlane directory.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/032a9140-2aa2-4203-a023-aa6cf4727ca6)
+
+Then we will create a my_base.sdc file which is based on openlane/designs/picorv32a/src directory based on the file openlane/scripts/base.sdc for STA analysis.
+
+```
+set ::env(CLOCK_PORT) clk
+set ::env(CLOCK_PERIOD) 24.73
+#set ::env(SYNTH_DRIVING_CELL) sky130_vsdinv
+set ::env(SYNTH_DRIVING_CELL) sky130_fd_sc_hd__inv_8
+set ::env(SYNTH_DRIVING_CELL_PIN) Y
+set ::env(SYNTH_CAP_LOAD) 17.653
+set ::env(IO_PCT) 0.2
+set ::env(SYNTH_MAX_FANOUT) 6
+
+create_clock [get_ports $::env(CLOCK_PORT)]  -name $::env(CLOCK_PORT)  -period $::env(CLOCK_PERIOD)
+set input_delay_value [expr $::env(CLOCK_PERIOD) * $::env(IO_PCT)]
+set output_delay_value [expr $::env(CLOCK_PERIOD) * $::env(IO_PCT)]
+puts "\[INFO\]: Setting output delay to: $output_delay_value"
+puts "\[INFO\]: Setting input delay to: $input_delay_value"
+
+set_max_fanout $::env(SYNTH_MAX_FANOUT) [current_design]
+
+set clk_indx [lsearch [all_inputs] [get_port $::env(CLOCK_PORT)]]
+#set rst_indx [lsearch [all_inputs] [get_port resetn]]
+set all_inputs_wo_clk [lreplace [all_inputs] $clk_indx $clk_indx]
+#set all_inputs_wo_clk_rst [lreplace $all_inputs_wo_clk $rst_indx $rst_indx]
+set all_inputs_wo_clk_rst $all_inputs_wo_clk
+
+# correct resetn
+set_input_delay $input_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] $all_inputs_wo_clk_rst
+#set_input_delay 0.0 -clock [get_clocks $::env(CLOCK_PORT)] {resetn}
+set_output_delay $output_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] [all_outputs]
+
+# TODO set this as parameter
+set_driving_cell -lib_cell $::env(SYNTH_DRIVING_CELL) -pin $::env(SYNTH_DRIVING_CELL_PIN) [all_inputs]
+set cap_load [expr $::env(SYNTH_CAP_LOAD) / 1000.0]
+puts "\[INFO\]: Setting load to: $cap_load"
+set_load  $cap_load [all_outputs]
+
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/8b8caaa3-70c0-48cb-bb2f-788eba6dda0e)
+
+Then we will run pre design and synthesis with required changes.
+
+```
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+set ::env(SYNTH_SIZING) 1
+run_synthesis
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/59023ded-eefb-42d2-866c-fd1a0709f60a)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/e293fa4f-1ffe-4b09-9a0a-0d8d000bb29a)
+
+Now , we are ready to run STA for the changes we have done.
+
+```sta pre_sta.conf```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/4cea7322-92dc-4b5e-86ef-1d75c43c9561)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6ffcdf9b-f070-4afe-9d91-0782269006ac)
+
+### 4. Steps to optimize synthesis to reduce setup violations
+
+Since increased fanout is causing more delay, we can add a parameter to reduce fanout and perform synthesis again.
+
+```
+prep -design picorv32a -tag 21-05_14-41 -overwrite
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+set ::env(SYNTH_SIZING) 1
+set ::env(SYNTH_MAX_FANOUT) 4
+echo $::env(SYNTH_DRIVING_CELL)
+run_synthesis
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6bbf3571-4c59-4ce2-a696-e9916d85a794)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/4635fa45-81ec-40b1-a7ba-6dc0e9a86b87)
+
+Now we will re run ```sta pre_sta.conf```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6c28d89f-1d3e-4a63-aab3-76b92b06d1a5)
+
+In the report we can see that , an OR gate of drive strenght 2 is driving 4 fanouts.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/07f40b8c-ce08-4805-b767-cd0db13cd2fc)
+
+Commands to analyze and optimize timing by replacing with an OR gate of drive strength 4.
+
+```
+report_net -connections _11672_
+help replace_cell
+replace_cell _14510_ sky130_fd_sc_hd__or3_4
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7671eb12-8b96-4458-8e16-8b75492dc4ec)
+
+We can see overall slack reduced
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/11a1216b-f975-4573-a16d-9eac18a16127)
+
+In the report we can see, Another OR gate of drive strength 2 is driving 4 fanouts
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/4ec6e77f-8b77-407e-9bef-e44852abe618)
+
+Commands to analyze and optimize timing
+
+```
+report_net -connections _11675_
+replace_cell _14514_ sky130_fd_sc_hd__or3_4
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7c86c406-8132-48d9-ae0e-e922389d6f2a)
+
+We can see overall slack reduced again.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/786e2756-252a-4849-bd2a-587fec1f62a6)
+
+### 5. Steps to do basic timing ECO
+
+In the report we can see that , OR gate of drive strength 2 driving OA gate has more delay.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/3ddf88fc-c356-478f-82c2-c76877c077d3)
+
+Commands to analyze and optimize timing
+
+```
+report_net -connections _11643_
+replace_cell _14481_ sky130_fd_sc_hd__or4_4
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+
+We can see overall slack reduced again.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/34c296cc-18be-4710-8a21-8b1ab20e5f7e)
+
+Another OR gate of drive strength 2 driving OA gate has more delay
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7e84f61c-c1e0-47cd-bade-3c0b30374a5e)
+
+Commands to analyze and optimize timing
+
+```
+report_net -connections _11668_
+replace_cell _14506_ sky130_fd_sc_hd__or4_4
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+
+We can see overall slack reduced again.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/64766039-50b3-4a93-9592-2b058505cf45)
+
+Verify instance 14506 is replaced with sky130_fd_sc_hd__or4_4
+
+```report_checks -from _29043_ -to _30440_ -through _14506_```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/eb7dcd72-ae9c-4f6d-9f86-e8d8d2be36b2)
+
+In total of 1.2827 violation was reduced (23.90 - 22.6173)
+
+### 6. Clock tree synthesis TritonCTS and signal integrity
+
+Steps to run CTS using Triton
+
+we wll replace the old netlist with the new one which was generated after after timing ECO fix.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/dcf31381-66f0-415a-93ea-8ef573b13d24)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/cee37ea0-3c18-49e7-bf09-fda576ea3aa5)
+
+Now once all the required changes are done , we will not run synthesis again , 
+
+We will run floorplan > Placement > cts.
+
+command for CTS ```run_cts```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1b759662-cd04-4236-b131-162924cdc336)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/0ed392ac-80a6-4353-a7a5-0188965b6817)
+
+We can see a CTS file is generated.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1edef4db-0ea4-45c5-88cd-1dd3a2324f7b)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/bef33b1c-d62d-4b95-a67c-de7e5c6dad46)
+
+Steps to verify CTS runs
+
+From the below commands we can verify the CTS operations
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/2eda28ad-b2d4-41de-9203-53f27f911f13)
+
+```
+echo $::env(LIB_SYNTH_COMPLETE)
+echo $::env(LIB_TYPICAL)
+echo $::env(CURRENT_DEF)
+echo $::env(SYNTH_MAX_TRAN)
+echo $::env(CTS_MAX_CAP)
+echo $::env(CTS_CLK_BUFFER_LIST)
+echo $::env(CTS_ROOT_BUFFER)
+```
+
+### 7. Timing analysis with real clock using openSTA
+
+In this we will use "openroad" instead of "openSTA".
+Open road can be invoked inside openlane
+
+```openroad```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/a9d026bd-6771-41ac-a1b4-dc7f8ad9f466)
+
+below are the commands to setup openroad.
+
+```
+read_lef /openLANE_flow/designs/picorv32a/runs/21-05_14-41/tmp/merged.lef
+read_def /openLANE_flow/designs/picorv32a/runs/21-05_14-41/results/cts/picorv32a.cts.lef
+write_db pico_cts.db
+read_db pico_cts.db
+read_verilog /openLANE_flow/designs/picorv32a/runs/21-05_14-41/results/synthesis/picorv32a.synthesis_cts.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock [all_clocks]
+help report_checks
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+```
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7be77789-23d0-43c6-b1f5-a5b103db997b)
+
+Steps to execute OpenSTA with right timing libraries and CTS assignment.
+
+Steps to observe impact of bigger CTS buffers on setup and hold timing
+
+*****************************************************************************************************************************************************************************************************************************************
+
+## **Day 4**
+
+### 1. Steps to build power distribution network
+
+command :  ```gen_pdn```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/c055c9de-0327-4b5a-b0f1-cbca08fe2f88)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/499b2e8e-f3f1-4d7c-9ecf-072650548ecb)
+
+Viewing the Floorplan with pdn init.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/a117ceb8-f9a2-447f-8999-8774e26b64da)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/43acae2d-5af3-4ceb-9223-8aeae9db772a)
+
+### 2. Steps for Detailed routing using TritonRoute and explore the routed layout.
+
+command : ```run_routing```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/65370927-6cb9-4898-846a-3276c8a17943)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/88eb34d6-97a2-4498-8eb4-f6c5b4fd3c4a)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/9aa7fb92-21fc-4816-8766-5bfc7e62e6d7)
+
+We can see the routed layout using magic.
+
+```magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.def &```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/847d40af-440f-44e3-91a1-000185074503)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/ded637da-c2d4-48c1-a8c9-7ebd90e2be9b)
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/21-05_14-41/tmp/routing
+gvim 20-fastroute.guide
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/fea360fe-4c77-452b-8aaa-a12d11d76a32)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7b03a614-405b-4e58-81bd-57ba42b736fe)
+
+### 3. Post-Route parasitic extraction using SPEF extractor & Final Layout.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/5c845b7a-910c-4447-bc70-d385b42e35df)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1b9a2527-b2ea-487e-a85c-4b296ea29900)
+
+Final Layout - A beauty ,A Art work
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/40c62d35-8470-4eab-9ed1-e630837da38e)
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
