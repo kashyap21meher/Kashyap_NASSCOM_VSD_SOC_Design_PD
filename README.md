@@ -414,6 +414,106 @@ drc why
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/8ac1eb22-0a0f-452f-be76-9496a0be4bce)
 
+*****************************************************************************************************************************************************************************************************************************************
+
+## **Day 4**
+
+### 1. Lab steps to convert grid info to track info
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/b7def3b7-49bb-47c4-b32c-7155e5d8f5d3)
+
+A track info is used to route the metal routes. its located in  
+
+```
+cd Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/openlane/sky130_fd_sc_hd
+cat tracks.info
+```
+
+With the help of ``help grid``` we get to know what all arguments does the grid command take.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/06975d7d-c7e4-4bd4-ab11-50ad1cf90647)
+
+Once make the required changes and press ENTER , the grid size changes as per the value entered.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1167cfaf-c1fe-4487-95aa-d1d3c1112135)
+
+### 2. Step to Convert Layout to ".lef" file
+
+For naming a port , first select a pin to assign a port .Then go to Edit > text and to required changes.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/3b7adea2-d5f0-400e-8e0b-b9b90c69c8f5)
+
+Now we need to define ports assign them as input, output and inout pins , this is done selecting the port an execting the below command :
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/7a07833e-fa22-4ecf-bc0b-28c09c7ca42e)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/5ff695bf-da28-4930-b350-f680fc52e062)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/93585022-acae-43a0-85b2-90bd5bbe4ac9)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/d2182a94-efc7-4fcf-bc76-4573ee021711)
+
+Now we are ready to extract the ".lef" file.
+
+First we will save the edited ".mag" file with different name.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/93a3d6e7-ea73-40ed-ba43-cfd646aba52b)
+
+then we will open the edited .mag file. and execte "lef write" which will create a ".lef" file 
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/a015d574-66ae-4906-b752-0d4f78486517)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/679a2290-5073-4733-bed5-fb848797160f)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/2d4a26b1-e7c6-459f-b3c6-54b62ac4ba79)
+
+Now we wll copy nescessary files to "picorv32a" designs folder.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6937b5ef-c988-4ed2-86fa-a852f69b9565)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/0da7980f-1010-4b38-9147-ba9c184b7b9e)
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/650a27b0-85a1-4cf9-b4f5-e5fd53dcc295)
+
+Now we need to modify our "config.tcl"
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/1278d181-19f4-434f-8b3b-06a8abfb8ee2)
+
+```
+set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib"
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]
+```
+
+Now we will Invoke openlane in interactive mode and ececute the below command (prp to synthesis)
+
+```
+package require openlane 0.9
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+run_synthesis
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/41406001-dc2b-4c24-8a8b-2e85d537ea26)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
