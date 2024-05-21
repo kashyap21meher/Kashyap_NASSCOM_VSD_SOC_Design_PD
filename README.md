@@ -292,6 +292,61 @@ The Extracted Parastics are shown below:
 
 ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/5074641f-6188-47a4-97c6-c458729a85cc)
 
+### 4. Creating Final SPICE deck using Sky130 tech and simulating through ngspice.
+
+Once we have extracted the SPICE file, we have to make some changes highlighted in the image below.
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/e9e69305-1862-4f3b-af90-7ccd86d57f01)
+
+After spice file is edited we can run the simulation using below command:
+
+```
+sudo apt-get install ngspice
+ngspice sky130_inv.spice
+```
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/b7a0a2c2-b074-4f03-aa55-d1e3370b5ce1)
+
+Once Simulation is completed , excute the bleow command to plot graph.
+
+'''plot Y vs time A'''
+
+![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/6149db6e-0df6-4ac5-b81b-7fb732623118)
+
+Now Right click to zoom 
+
+1. Rise time transition 20%-0.66 to 80%-2.64
+   
+   ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/76480d87-4d50-4b77-bae5-a8e9ec2e8179)
+
+   Rise Time = 0.05ns
+
+2. Fall time transition 80%-2.64 to 20%-0.66
+   
+   ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/b81b4704-cd7d-4a33-9cfd-3a530649c448)
+
+   Fall Time = 0.02ns
+
+3.Cell rise delay 50%-1.65
+
+  ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/332bac11-4d78-400a-b10c-8154259cbf71)
+
+  Cell rise delay = 0.05ns
+
+4.Cell fall delay 50%-1.65
+
+  ![image](https://github.com/kashyap21meher/Kashyap_NASSCOM_VSD_SOC_Design_PD/assets/169720302/200ceca5-d300-4ec2-9eaf-35d2f2a953a0)
+
+  Cell fall delay = 0.02ns
+
+  
+
+
+
+
+
+
+
 
 
 
