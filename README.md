@@ -1,4 +1,4 @@
-# Kashyap_NASSCOM_VSD_SOC_Design_PD
+466yfh# Kashyap_NASSCOM_VSD_SOC_Design_PD
 
 # **Introduction**
 
@@ -791,10 +791,17 @@ help report_checks
 report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
 ```
 
-
 Steps to execute OpenSTA with right timing libraries and CTS assignment.
 
-
+```
+echo $::env(CTS_CLK_BUFFER_LIST)
+set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
+echo $::env(CTS_CLK_BUFFER_LIST)
+echo $::env(CURRENT_DEF)
+set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/21-05_14-41/results/placement/picorv32a.placement.def
+run_cts
+echo $::env(CTS_CLK_BUFFER_LIST)
+```
 
 Steps to observe impact of bigger CTS buffers on setup and hold timing
 
@@ -802,35 +809,21 @@ Steps to observe impact of bigger CTS buffers on setup and hold timing
 openroad
 
 read_lef /openLANE_flow/designs/picorv32a/runs/21-05_14-41/tmp/merged.lef
-
 read_def /openLANE_flow/designs/picorv32a/runs/21-05_14-41/results/cts/picorv32a.cts.def
-
 write_db pico_cts1.db
-
 read_db pico_cts.db
-
 read_verilog /openLANE_flow/designs/picorv32a/runs/21-05_14-41/results/synthesis/picorv32a.synthesis_cts.v
-
 read_liberty $::env(LIB_SYNTH_COMPLETE)
-
 link_design picorv32a
-
 read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
-
 set_propagated_clock [all_clocks]
-
 report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
-
 report_clock_skew -hold
-
 report_clock_skew -setup
-
 exit
 
 echo $::env(CTS_CLK_BUFFER_LIST)
-
 set ::env(CTS_CLK_BUFFER_LIST) [linsert $::env(CTS_CLK_BUFFER_LIST) 0 sky130_fd_sc_hd__clkbuf_1]
-
 echo $::env(CTS_CLK_BUFFER_LIST)
 ```
 
